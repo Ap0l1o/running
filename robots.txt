@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://yihong.run/running/sitemap/sitemap-index.xml
-Host: https://yihong.run
+Sitemap: https://ap0l1o.github.io/running/sitemap/sitemap-index.xml
+Host: https://ap0l1o.github.io
