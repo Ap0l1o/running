@@ -82,7 +82,7 @@ module.exports = {
         background_color: '#e1e1e1',
         theme_color: '#e1e1e1',
         display: 'minimal-ui',
-        icon: 'src/images/favicon.png', // This path is relative to the root of the site.
+        icon: 'src/images/ap0l1o.png', // This path is relative to the root of the site.
       },
     },
     'gatsby-transformer-sharp',
