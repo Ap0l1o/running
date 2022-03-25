@@ -7,6 +7,10 @@ module.exports = {
     description: 'my trainning journal.',
     navLinks: [
       {
+        name: 'Strava',
+        url: 'https://www.strava.com/athletes/64194147'
+      },
+      {
         name: 'Home',
         url: 'https://ap0l1o.github.io/',
       },
