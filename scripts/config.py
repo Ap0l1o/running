@@ -4,6 +4,8 @@ from re import M
 
 import yaml
 
+# 此处设置了一些全局变量，指示一些关键信息
+
 GET_DIR = "activities"
 OUTPUT_DIR = "activities"
 GPX_FOLDER = os.path.join(os.getcwd(), "GPX_OUT")

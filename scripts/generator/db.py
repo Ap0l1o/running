@@ -8,6 +8,9 @@ from sqlalchemy import Column, Float, Integer, Interval, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+
+# declarative_base()是sqlalchemy内部封装的一个方法，
+# 通过其构造一个基类，这个基类和它的子类，可以将Python类和数据库表关联映射起来。
 Base = declarative_base()
 
 import random
@@ -38,8 +41,9 @@ ACTIVITY_KEYS = [
     "average_speed",
 ]
 
-
+# 数据库表的对应类，该类继承了基类Base
 class Activity(Base):
+    # 数据库表模型类通过__tablename__和表关联起来，Column表示数据表的列。
     __tablename__ = "activities"
 
     run_id = Column(Integer, primary_key=True)
@@ -56,6 +60,7 @@ class Activity(Base):
     average_speed = Column(Float)
     streak = None
 
+    # 根据当前的Activity对象生成一个「字典」并返回
     def to_dict(self):
         out = {}
         for key in ACTIVITY_KEYS:
@@ -71,12 +76,16 @@ class Activity(Base):
         return out
 
 
+# 更新或创建一个activity
 def update_or_create_activity(session, run_activity):
+    # 标记是否在数据库中创建了一个新的activity
     created = False
     try:
+        # 从数据库中查询是否已经有该activity
         activity = (
             session.query(Activity).filter_by(run_id=int(run_activity.id)).first()
         )
+        # 没有的话则构造一个activity将其添加到数据库
         if not activity:
             start_point = run_activity.start_latlng
             location_country = getattr(run_activity, "location_country", "")
@@ -113,6 +122,7 @@ def update_or_create_activity(session, run_activity):
             )
             session.add(activity)
             created = True
+        # 数据库中已经存在该activity则更新
         else:
             activity.name = run_activity.name
             activity.distance = float(run_activity.distance)
@@ -127,13 +137,18 @@ def update_or_create_activity(session, run_activity):
         print(str(e))
         pass
 
-    return created
+    return created # 返回是否创建了一个新的activity并将其添加到数据库中
 
 
+# 根据指定的数据库路径初始化一个数据库
 def init_db(db_path):
+    # 创建连接
     engine = create_engine(
         f"sqlite:///{db_path}", connect_args={"check_same_thread": False}
     )
+    # 生成数据库表
     Base.metadata.create_all(engine)
+    # 创建程序和数据库之间的会话
     session = sessionmaker(bind=engine)
+    # 返回该会话
     return session()
