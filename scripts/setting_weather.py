@@ -115,16 +115,3 @@ if __name__ == "__main__" :
         
         res = strava_client.update_activity(activity.id, description = new_description)
         
-        # print (new_description)
-        
-        # t
-        # print (type(res))
-        # print (res_dict['code'])
-        # new_description = res + "\n" + activity.description
-        # print (new_description)
-        # print (activity.description)
-        
-
-'''
-'{"code":"200","updateTime":"2022-07-20T18:27+08:00","fxLink":"http://hfx.link/2xc1","now":{"obsTime":"2022-07-20T18:12+08:00","temp":"20","feelsLike":"15","icon":"305","text":"小雨","wind360":"90","windDir":"东风","windScale":"6","windSpeed":"42","humidity":"98","precip":"0.0","pressure":"998","vis":"13","cloud":"91","dew":"21"},"refer":{"sources":["QWeather","NMC","ECMWF"],"license":["no commercial use"]}}'
-'''
