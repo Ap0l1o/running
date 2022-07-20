@@ -9,7 +9,7 @@ import json
 
 
 def get_icon(icon) :
-    new_icon = '🇨🇳 '
+    new_icon = '🏃 🇨🇳 '
     if icon == "晴" :
         new_icon += '☀️'
     elif icon == "阴" :
@@ -106,17 +106,18 @@ if __name__ == "__main__" :
         params['location'] = str(lon) + "," + str(lat)
         weather_res = requests.get(url, params).text # 响应信息
         weather_info = json.loads(weather_res)['now'] # 从响应信息提取出天气信息
-        icon = weather_info['icon'] # 图标代码
         text = weather_info['text'] # 文字描述
+        icon = get_icon(text) # emoji
         temp = weather_info['temp'] # 温度
         feel_like = weather_info['feelsLike'] # 体感温度
         humidity = weather_info['humidity'] # 湿度
         wind_speed = weather_info['windSpeed'] # 风速
         wind_dir = weather_info['windDir'] # 风向
         
-        weather_info = get_icon(text) + " " + text + " , 温度 " + temp + "°C , 体感温度 " + feel_like + "°C , 相对湿度 " + humidity + "% , " + wind_dir + " " + wind_speed + "km/h \n" 
+        weather_info = icon + " " + text + " , 气温 " + temp + "°C , 体感温度 " + feel_like + "°C , 相对湿度 " + humidity + "% , " + wind_dir + " " + wind_speed + "km/h \n" 
         
         new_description = weather_info + description
+        new_name = icon + " " + activity.name
         
-        res = strava_client.update_activity(activity.id, description = new_description)
+        res = strava_client.update_activity(activity.id, description = new_description, name = new_name)
         
