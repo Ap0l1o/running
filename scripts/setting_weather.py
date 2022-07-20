@@ -12,6 +12,8 @@ def get_icon(icon) :
     new_icon = '🇨🇳 '
     if icon == "晴" :
         new_icon += '☀️'
+    elif icon == "阴" :
+        new_icon += '☁️'
     elif icon =="多云":
         new_icon += '☁️'
     elif icon == "少云":
@@ -91,6 +93,9 @@ if __name__ == "__main__" :
         # 然后根据此id用get_activity函数获得完全信息的activity
         activity = strava_client.get_activity(activity.id)
         description = activity.description
+        if description == None :
+            description = ''
+        # 如果以国旗开头，则表示已经设置好了
         if description.startswith('🇨🇳'):
             break
         
