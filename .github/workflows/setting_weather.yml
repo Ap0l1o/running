@@ -1,0 +1,50 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Setting the Weather Information
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "* * * * *"
+  push:
+    branches:
+      - master
+    paths:
+      - scripts/setting_weather.py
+      - requirements.txt
+
+
+jobs:
+  sync:
+    name: Sync
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.6
+
+      # from pdm
+      - name: Set Variables
+        id: set_variables
+        run: |
+          echo "::set-output name=PY::$(python -c 'import hashlib, sys;print(hashlib.sha256(sys.version.encode()+sys.executable.encode()).hexdigest())')"
+          echo "::set-output name=PIP_CACHE::$(pip cache dir)"
+      - name: Cache PIP
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.set_variables.outputs.PIP_CACHE }}
+          key: Ubuntu-pip-${{ steps.set_variables.outputs.PY }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+
+      
+      - name: Setting the weather information
+        run: |
+          python scripts/setting_weather.py ${{ secrets.STRAVA_CLIENT_ID }} ${{ secrets.STRAVA_CLIENT_SECRET }} ${{ secrets.STRAVA_CLIENT_REFRESH_TOKEN }}
