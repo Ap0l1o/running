@@ -96,7 +96,7 @@ if __name__ == "__main__" :
         if description == None :
             description = ''
         # 如果以国旗开头，则表示已经设置好了
-        if description.startswith('🇨🇳'):
+        if description.startswith('🏃'):
             break
         
         # 获取天气信息
