@@ -8,8 +8,11 @@ import datetime
 import json
 
 
-def get_icon(icon) :
-    new_icon = '🏃 🇨🇳 '
+def get_icon(icon, type) :
+    if type == "Run":
+      new_icon = '🏃 🇨🇳 '
+    else:
+      new_icon = '🚴 🇨🇳 '
     if icon == "晴" :
         new_icon += '☀️'
     elif icon == "阴" :
@@ -93,10 +96,11 @@ if __name__ == "__main__" :
         # 然后根据此id用get_activity函数获得完全信息的activity
         activity = strava_client.get_activity(activity.id)
         description = activity.description
+        type = activity.type
         if description == None :
             description = ''
         # 如果以国旗开头，则表示已经设置好了
-        if description.startswith('🏃'):
+        if description.startswith('🏃') or description.startswith('🚴'):
             break
         
         # 获取天气信息
@@ -107,7 +111,7 @@ if __name__ == "__main__" :
         weather_res = requests.get(url, params).text # 响应信息
         weather_info = json.loads(weather_res)['now'] # 从响应信息提取出天气信息
         text = weather_info['text'] # 文字描述
-        icon = get_icon(text) # emoji
+        icon = get_icon(text, type) # emoji
         temp = weather_info['temp'] # 温度
         feel_like = weather_info['feelsLike'] # 体感温度
         humidity = weather_info['humidity'] # 湿度
